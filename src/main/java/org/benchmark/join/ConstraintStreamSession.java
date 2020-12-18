@@ -20,11 +20,8 @@ final class ConstraintStreamSession implements Session {
 
     public ConstraintStreamSession(ConstraintStreamImplType constraintStreamImplType, boolean indexed) {
         ConstraintProvider constraintProvider = getConstraintProvider(indexed);
-
         ConstraintStreamScoreDirectorFactory<CloudBalance, ?> scoreDirectorFactory = getCSFactory(constraintProvider, constraintStreamImplType);
-
-        session = (ConstraintSession<CloudBalance, HardSoftScore>) scoreDirectorFactory
-                .newConstraintStreamingSession(false, MyBenchmark.FULL_SOLUTION);
+        session = (ConstraintSession<CloudBalance, HardSoftScore>) scoreDirectorFactory.newConstraintStreamingSession(false, MyBenchmark.FULL_SOLUTION);
     }
 
     @Override

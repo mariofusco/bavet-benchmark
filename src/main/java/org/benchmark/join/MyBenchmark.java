@@ -57,13 +57,14 @@ import org.optaplanner.examples.cloudbalancing.domain.CloudProcess;
 import org.optaplanner.examples.cloudbalancing.persistence.CloudBalanceXmlSolutionFileIO;
 
 @State(Scope.Benchmark)
-@Warmup(iterations = 10)
-@Measurement(iterations = 20)
-@Fork(value = 3, jvmArgs = {"-Xms4G", "-Xmx4G"})
+@Warmup(iterations = 1)
+@Measurement(iterations = 2)
+@Fork(value = 1, jvmArgs = {"-Xms4G", "-Xmx4G"})
 @BenchmarkMode(Mode.Throughput)
 public class MyBenchmark {
 
-    private static final Random RANDOM = new Random();
+    private static final Random RANDOM = new Random(1);
+
     static final SolutionDescriptor<CloudBalance> SOLUTION_DESCRIPTOR =
             SolutionDescriptor.buildSolutionDescriptor(CloudBalance.class, CloudProcess.class);
 
@@ -74,6 +75,7 @@ public class MyBenchmark {
     public String algo;
 
     @Param({"true", "false"})
+//    @Param({"true"})
     public boolean indexed;
 
     // This is a thin wrapper around KieSession.
@@ -88,10 +90,9 @@ public class MyBenchmark {
         // Initialize the solution randomly.
         for (CloudProcess cloudProcess : originalSolution.getProcessList()) {
             boolean initialize = (RANDOM.nextInt(100) > 5); // 95 % will be initialized.
-            if (!initialize) {
-                continue;
+            if (initialize) {
+                cloudProcess.setComputer(computers.get(RANDOM.nextInt(computers.size())));
             }
-            cloudProcess.setComputer(computers.get(RANDOM.nextInt(computers.size())));
         }
         return originalSolution;
     }

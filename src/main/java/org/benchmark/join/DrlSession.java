@@ -1,8 +1,5 @@
 package org.benchmark.join;
 
-import java.util.IdentityHashMap;
-import java.util.Map;
-
 import org.benchmark.Session;
 import org.drools.modelcompiler.ExecutableModelProject;
 import org.kie.api.KieBase;
@@ -17,7 +14,7 @@ import org.optaplanner.examples.cloudbalancing.domain.CloudBalance;
 
 final class DrlSession implements Session {
 
-   private final Map<Object, FactHandle> fhMap = new IdentityHashMap<>();
+//   private final Map<Object, FactHandle> fhMap = new IdentityHashMap<>();
 
     private final KieSession session;
 
@@ -34,15 +31,15 @@ final class DrlSession implements Session {
 
     @Override
     public int insert(Object object) {
-//        session.insert(object);
-        fhMap.put(object, session.insert(object));
+//        fhMap.put(object, session.insert(object));
+        session.insert(object);
         return 0;
     }
 
     @Override
     public int update(Object object) {
-//        FactHandle handle = session.getFactHandle(object);
-        FactHandle handle = fhMap.get(object);
+//        FactHandle handle = fhMap.get(object);
+        FactHandle handle = session.getFactHandle(object);
         session.update(handle,object);
         return 1;
     }
