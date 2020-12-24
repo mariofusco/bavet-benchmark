@@ -53,8 +53,8 @@ final class ExecModelSession implements Session {
     private final KieSession session;
     private final HardSoftScoreHolderImpl scoreHolder;
 
-    public ExecModelSession(boolean usegroupbynode) {
-        DroolsScoreDirectorFactory<CloudBalance, ?> SDF = new DroolsScoreDirectorFactory<>(MyBenchmark.SOLUTION_DESCRIPTOR, buildKieBase(usegroupbynode));
+    public ExecModelSession() {
+        DroolsScoreDirectorFactory<CloudBalance, ?> SDF = new DroolsScoreDirectorFactory<>(MyBenchmark.SOLUTION_DESCRIPTOR, buildKieBase());
         session = SDF.newKieSession();
         ((RuleEventManager) session).addEventListener(new OptaPlannerRuleEventListener());
         scoreHolder = new HardSoftScoreHolderImpl(false);
@@ -66,13 +66,8 @@ final class ExecModelSession implements Session {
         session.setGlobal("scoreHolder", scoreHolder);
     }
 
-    private static KieBase buildKieBase(boolean usegroupbynode) {
-        try {
-            System.setProperty( "drools.usegroupbynode", "" + usegroupbynode );
-            return KieBaseBuilder.createKieBaseFromModel( requiredCpuPowerTotal_GroupBy(), KieBaseMutabilityOption.DISABLED );
-        } finally {
-            System.clearProperty( "drools.usegroupbynode" );
-        }
+    private static KieBase buildKieBase() {
+        return KieBaseBuilder.createKieBaseFromModel( requiredCpuPowerTotal_GroupBy(), KieBaseMutabilityOption.DISABLED );
     }
 
     @Override
