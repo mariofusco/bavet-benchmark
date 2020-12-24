@@ -3,6 +3,7 @@ package org.benchmark.groupby;
 import org.benchmark.Session;
 import org.drools.modelcompiler.ExecutableModelProject;
 import org.kie.api.KieBase;
+import org.kie.api.conf.KieBaseMutabilityOption;
 import org.kie.api.io.ResourceType;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.FactHandle;
@@ -54,7 +55,7 @@ final class DrlSession implements Session {
     private static KieBase buildKieBase() {
         return new KieHelper(PropertySpecificOption.DISABLED)
                 .addContent(DRL, ResourceType.DRL)
-                .build(ExecutableModelProject.class);
+                .build(ExecutableModelProject.class, KieBaseMutabilityOption.DISABLED);
     }
 
     @Override

@@ -3,6 +3,7 @@ package org.benchmark.join;
 import org.benchmark.Session;
 import org.drools.modelcompiler.ExecutableModelProject;
 import org.kie.api.KieBase;
+import org.kie.api.conf.KieBaseMutabilityOption;
 import org.kie.api.io.ResourceType;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.FactHandle;
@@ -14,8 +15,6 @@ import org.optaplanner.examples.cloudbalancing.domain.CloudBalance;
 
 final class DrlSession implements Session {
 
-//   private final Map<Object, FactHandle> fhMap = new IdentityHashMap<>();
-
     private final KieSession session;
 
     public DrlSession(boolean indexed) {
@@ -26,19 +25,17 @@ final class DrlSession implements Session {
     private static KieBase buildKieBase(boolean indexed) {
         return new KieHelper(PropertySpecificOption.DISABLED)
                 .addContent(getDrl(indexed), ResourceType.DRL)
-                .build(ExecutableModelProject.class);
+                .build(ExecutableModelProject.class, KieBaseMutabilityOption.DISABLED);
     }
 
     @Override
     public int insert(Object object) {
-//        fhMap.put(object, session.insert(object));
         session.insert(object);
         return 0;
     }
 
     @Override
     public int update(Object object) {
-//        FactHandle handle = fhMap.get(object);
         FactHandle handle = session.getFactHandle(object);
         session.update(handle,object);
         return 1;
@@ -67,6 +64,7 @@ final class DrlSession implements Session {
                 "        CloudProcess(computer == $computer)\n" :
                 "        CloudProcess(org.drools.modelcompiler.util.EvaluationUtil.areNullSafeEquals(computer, $computer))\n"
                 ) +
+//                "        eval(false)\n" +
                 "    then\n" +
                 "        // don't do anything\n" +
                 "end\n";

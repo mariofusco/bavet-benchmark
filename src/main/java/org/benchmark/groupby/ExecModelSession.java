@@ -9,6 +9,7 @@ import org.drools.model.impl.ModelImpl;
 import org.drools.modelcompiler.builder.KieBaseBuilder;
 import org.drools.modelcompiler.dsl.pattern.D;
 import org.kie.api.KieBase;
+import org.kie.api.conf.KieBaseMutabilityOption;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.FactHandle;
 import org.kie.internal.event.rule.RuleEventManager;
@@ -68,7 +69,7 @@ final class ExecModelSession implements Session {
     private static KieBase buildKieBase(boolean usegroupbynode) {
         try {
             System.setProperty( "drools.usegroupbynode", "" + usegroupbynode );
-            return KieBaseBuilder.createKieBaseFromModel( requiredCpuPowerTotal_GroupBy() );
+            return KieBaseBuilder.createKieBaseFromModel( requiredCpuPowerTotal_GroupBy(), KieBaseMutabilityOption.DISABLED );
         } finally {
             System.clearProperty( "drools.usegroupbynode" );
         }

@@ -150,7 +150,7 @@ public class MyBenchmark {
         return bh;
     }
 
-    @Benchmark
+//    @Benchmark
     public Blackhole changeComputer(Blackhole bh) {
         CloudComputer oldComputer = process1.getComputer();
         process1.setComputer(process2.getComputer());

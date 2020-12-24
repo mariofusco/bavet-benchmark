@@ -57,8 +57,8 @@ import org.optaplanner.examples.cloudbalancing.domain.CloudProcess;
 import org.optaplanner.examples.cloudbalancing.persistence.CloudBalanceXmlSolutionFileIO;
 
 @State(Scope.Benchmark)
-@Warmup(iterations = 1)
-@Measurement(iterations = 2)
+@Warmup(iterations = 10)
+@Measurement(iterations = 20)
 @Fork(value = 1, jvmArgs = {"-Xms4G", "-Xmx4G"})
 @BenchmarkMode(Mode.Throughput)
 public class MyBenchmark {
@@ -74,8 +74,8 @@ public class MyBenchmark {
     @Param({"DRL", "CS-B"})
     public String algo;
 
-    @Param({"true", "false"})
-//    @Param({"true"})
+//    @Param({"true", "false"})
+    @Param({"true"})
     public boolean indexed;
 
     // This is a thin wrapper around KieSession.
